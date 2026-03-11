@@ -21,38 +21,38 @@ Repository context:
 	Project root: a Spring Boot app named productInventoryTracker.
 
 Relevant files and responsibilities:
-	- src/main/java/com/access/productInventoryTracker/model/Product.java - JPA entity with fields: id, name, price, category, available.
-	- src/main/java/com/access/productInventoryTracker/dto/ProductDTO.java - simple DTO for products.
-	- src/main/java/com/access/productInventoryTracker/service/ProductService.java - existing service; add bulk methods here.
-	- src/main/java/com/access/productInventoryTracker/repository/ProductRepository.java - JpaRepository for Product.
-	- There is an application.properties and tests under src/test/java.
-	- src/test/java/com/access/productInventoryTracker/service/ProductServiceTest.java - unit tests for the service using Mockito. 
-	- src/test/java/com/access/productInventoryTracker/ProductInventoryTrackerApplicationTests.java - basic Spring Boot context test.
+	* src/main/java/com/access/productInventoryTracker/model/Product.java - JPA entity with fields: id, name, price, category, available.
+	* src/main/java/com/access/productInventoryTracker/dto/ProductDTO.java - simple DTO for products.
+	* src/main/java/com/access/productInventoryTracker/service/ProductService.java - existing service; add bulk methods here.
+	* src/main/java/com/access/productInventoryTracker/repository/ProductRepository.java - JpaRepository for Product.
+	* There is an application.properties and tests under src/test/java.
+	* src/test/java/com/access/productInventoryTracker/service/ProductServiceTest.java - unit tests for the service using Mockito. 
+	* src/test/java/com/access/productInventoryTracker/ProductInventoryTrackerApplicationTests.java - basic Spring Boot context test.
 
 Your task is to add support for bulk product operations, allowing the system to process multiple product actions in a single request. The implementation should support common batch operations such as:
-	- creating multiple products
-	- updating multiple products
-	- deleting multiple products
+	* creating multiple products
+	* updating multiple products
+	* deleting multiple products
 
 Follow these guidelines while generating the solution:
-	- Keep the implementation consistent with the current Spring Boot layered structure.
-	- Business logic should remain inside the service layer, specifically in ProductService.
-	- Reuse the existing ProductDTO where appropriate.
-	- Introduce additional request/response DTOs if needed for bulk operations.
-	- Prefer efficient repository operations such as saveAll() or deleteAllById() instead of looping individual database calls.
-	- Ensure the solution handles validation (for example missing IDs for updates, invalid values, etc.).
-	- Consider using transaction management where appropriate so bulk operations are handled safely.
-	- The implementation should be clean, readable, and follow common Spring Boot best practices.
+	* Keep the implementation consistent with the current Spring Boot layered structure.
+	* Business logic should remain inside the service layer, specifically in ProductService.
+	* Reuse the existing ProductDTO where appropriate.
+	* Introduce additional request/response DTOs if needed for bulk operations.
+	* Prefer efficient repository operations such as saveAll() or deleteAllById() instead of looping individual database calls.
+	* Ensure the solution handles validation (for example missing IDs for updates, invalid values, etc.).
+	* Consider using transaction management where appropriate so bulk operations are handled safely.
+	* The implementation should be clean, readable, and follow common Spring Boot best practices.
 
 Testing is also important for this change.
 Update or extend the existing ProductService unit tests to cover the new bulk operations. The tests should follow the current testing approach using JUnit and Mockito, mocking the repository and verifying the expected service behavior.
 
 When generating the solution, include:
-	- any additional DTOs required for bulk requests or responses
-	- new methods in ProductService
-	- repository updates if necessary
-	- example controller endpoints that expose the bulk functionality
-	- unit test examples extending the existing test structure
+	* any additional DTOs required for bulk requests or responses
+	* new methods in ProductService
+	* repository updates if necessary
+	* example controller endpoints that expose the bulk functionality
+	* unit test examples extending the existing test structure
 
 Make sure the solution integrates smoothly with the existing codebase and avoids unnecessary complexity.
 
