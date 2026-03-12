@@ -12,12 +12,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     // You can add custom methods here if needed, for example: 
     // List<Product> findByCategory(String category);
 
-
-    // AI Generated
-    @Query(value = "SELECT * FROM product p " +
-                   "WHERE p.category = '" + ":#{#category}" + "' " +
-                   "AND p.available = true " +
-                   "ORDER BY p.price DESC",
-           nativeQuery = true)
+	// BUG FIX: The original method was returning products that did not match the category due to incorrect filtering logic.
+    @Query("SELECT p FROM Product p WHERE LOWER(p.category) = LOWER(:category) ORDER BY p.price DESC")
     List<Product> findProductsByCategory(@Param("category") String category);
 }
