@@ -7,11 +7,16 @@ import com.access.productInventoryTracker.repository.ProductRepository;
 import static org.mockito.Mockito.when;
 import java.util.Arrays;
 import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 public class ProductServiceTest {
@@ -21,7 +26,8 @@ public class ProductServiceTest {
 
     @InjectMocks
     private ProductService productService;
-
+    
+    @BeforeEach
     public void setupMockProducts() {
         List<Product> mockProducts = Arrays.asList(
             new Product(1L, "Laptop", 1500.0, "Electronics", true),
@@ -50,5 +56,63 @@ public class ProductServiceTest {
     }
 
     // Your tests here...
-
+    @Test
+    public void testGetProductsByCategoryValid() {
+    	// Before the fix, this returned every product EXCEPT Electronics (inverted logic).
+		List<ProductDTO> electronicsProducts = productService.getProductsByCategory("Electronics");
+		assertTrue(electronicsProducts.stream().allMatch(p -> p.getCategory().equalsIgnoreCase("electronics")));
+		assertEquals(5, electronicsProducts.size());
+	}
+    
+    @Test
+    public void testGetProductsByCategoryEmpty() {
+		List<ProductDTO> wrongProducts = productService.getProductsByCategory("WrongCategory");
+		assertEquals(0, wrongProducts.size());
+	}
+    
+    @Test
+    public void testGetProductsByCategoryNull() {
+    	List<ProductDTO> wrongProducts = productService.getProductsByCategory(null);
+		assertEquals(0, wrongProducts.size());
+	}
+    
+    @Test
+    public void testGetProductsByPriceRange() {
+    	List<ProductDTO> productsInRange = productService.getProductsByPriceRange(100, 300);
+		assertEquals(9, productsInRange.size());
+	}
+    
+    @Test
+    public void testGetProductsByPriceRangeEmpty() {
+    	List<ProductDTO> result = productService.getProductsByPriceRange(5000, 6000);
+        assertTrue(result.isEmpty());
+    }
+    
+    @Test
+    public void testGetProductsByPriceRangeInvalid() {
+		assertThrows(IllegalArgumentException.class, () -> productService.getProductsByPriceRange(300, 100));
+	}
+    
+    @Test
+    public void testGetProductsByPriceRangeNegative() {
+		assertThrows(IllegalArgumentException.class, () -> productService.getProductsByPriceRange(-300, 100));
+	}
+    
+	@Test
+	public void testGetProductsByAvailabilityTrue() {
+		List<ProductDTO> availableProducts = productService.getProductsByAvailability(true);
+		assertEquals(14, availableProducts.size());
+	}
+	
+	@Test
+	public void testGetProductsByAvailabilityFalse() {
+		List<ProductDTO> unavailableProducts = productService.getProductsByAvailability(false);
+		assertEquals(6, unavailableProducts.size());
+	}
+	
+	@Test
+	public void getAllProducts() {
+        List<ProductDTO> result = productService.getAllProducts();
+        assertEquals(20, result.size());
+    }
 }
